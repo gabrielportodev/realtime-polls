@@ -1,3 +1,4 @@
+import { Header } from '@/components/poll/header'
 import { Open_Sans } from 'next/font/google'
 import type { Metadata } from 'next'
 import './globals.css'
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='pt-BR' className={`${openSans.variable} h-full antialiased`}>
-      <body className='min-h-full flex flex-col'>{children}</body>
+      <body className='min-h-full flex flex-col'>
+        <Header />
+        {children}
+      </body>
     </html>
   )
 }
