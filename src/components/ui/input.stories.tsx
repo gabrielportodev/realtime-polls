@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 const meta: Meta<typeof Input> = {
   component: Input,
   args: {
-    placeholder: 'Digite algo...'
+    placeholder: 'Digite aqui a sua pergunta'
   }
 }
 
@@ -13,6 +13,20 @@ type Story = StoryObj<typeof Input>
 
 export const Default: Story = {}
 
+export const WithLabel: Story = {
+  args: { label: 'Titulo' }
+}
+
+export const WithError: Story = {
+  args: {
+    label: 'Titulo',
+    error: 'Campo obrigatório'
+  }
+}
+
 export const Disabled: Story = {
-  args: { disabled: true }
+  args: {
+    label: 'Titulo',
+    disabled: true
+  }
 }
