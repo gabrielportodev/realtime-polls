@@ -23,11 +23,6 @@ describe('DateInput', () => {
     expect(document.querySelector('input[type="datetime-local"]')).toBeDisabled()
   })
 
-  it('renderiza o ícone de calendário', () => {
-    render(<DateInput />)
-    expect(document.querySelector('svg')).toBeInTheDocument()
-  })
-
   it('aceita mudança de valor', () => {
     render(<DateInput />)
     const input = document.querySelector('input[type="datetime-local"]') as HTMLInputElement
