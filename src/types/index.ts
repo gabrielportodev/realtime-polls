@@ -1,4 +1,4 @@
-export type PollStatus = 'not_started' | 'started' | 'ongoing' | 'finished'
+export type PollStatus = 'not_started' | 'ongoing' | 'finished'
 
 export type PollOption = {
   id: string
