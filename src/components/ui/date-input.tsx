@@ -1,4 +1,4 @@
-import { Calendar } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
 
@@ -18,26 +18,17 @@ function DateInput({ className, label, error, id, ...props }: DateInputProps) {
         </label>
       )}
       <div className='relative w-full'>
-        <input
+        <Input
           id={inputId}
           type='datetime-local'
           className={cn(
-            'w-full h-11 px-4 pr-10 rounded-xs border border-neutral bg-white',
+            'w-full h-11 px-4 rounded-xs border border-neutral bg-white',
             'text-sm text-text-dark',
-            'outline-none transition-all',
-            'focus:border-primary focus:ring-2 focus:ring-primary/30',
-            'disabled:opacity-50 disabled:cursor-not-allowed',
-            '[&::-webkit-calendar-picker-indicator]:opacity-0',
-            '[&::-webkit-calendar-picker-indicator]:absolute',
-            '[&::-webkit-calendar-picker-indicator]:inset-0',
-            '[&::-webkit-calendar-picker-indicator]:w-full',
-            '[&::-webkit-calendar-picker-indicator]:cursor-pointer',
-            error && 'border-red-500 focus:ring-red-500/30',
+            error && 'border-red-500',
             className
           )}
           {...props}
         />
-        <Calendar className='absolute right-3 top-1/2 -translate-y-1/2 size-4 text-neutral-dark pointer-events-none' />
       </div>
       {error && <span className='text-xs text-red-500'>{error}</span>}
     </div>
