@@ -1,0 +1,136 @@
+'use client'
+
+import { getPollStatus, POLL_STATUS_LABELS, POLL_STATUS_COLORS } from '@/lib/get-poll-status'
+import { RadioOption } from '@/components/ui/radio-option'
+import { createClient } from '@/lib/supabase/client'
+import { VoteBar } from '@/components/poll/vote-bar'
+import { Button } from '@/components/ui/button'
+import { vote } from '@/lib/supabase/queries'
+import { useState, useEffect } from 'react'
+import { Poll, Vote } from '@/types'
+
+interface PollVotingProps {
+  initialPoll: Poll
+}
+
+function PollVoting({ initialPoll }: PollVotingProps) {
+  const [poll, setPoll] = useState(initialPoll)
+  const [selectedOption, setSelectedOption] = useState<string | null>(null)
+  const [showResults, setShowResults] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const status = getPollStatus(poll.start_at, poll.end_at)
+  const isActive = status === 'ongoing'
+
+  const totalVotes = poll.poll_options?.reduce((sum, opt) => sum + (opt.votes?.length ?? 0), 0) ?? 0
+
+  useEffect(() => {
+    const supabase = createClient()
+    const optionIds = poll.poll_options?.map(opt => opt.id) ?? []
+    if (optionIds.length === 0) return
+
+    const channel = supabase
+      .channel(`poll-votes-${poll.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'votes',
+          filter: `poll_option_id=in.(${optionIds.join(',')})`
+        },
+        payload => {
+          setPoll(prev => ({
+            ...prev,
+            poll_options: prev.poll_options?.map(opt =>
+              opt.id === payload.new.poll_option_id
+                ? { ...opt, votes: [...(opt.votes ?? []), payload.new as unknown as Vote] }
+                : opt
+            )
+          }))
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [poll])
+
+  async function handleVote() {
+    if (!selectedOption) return
+    setIsLoading(true)
+    try {
+      await vote(selectedOption)
+      setShowResults(true)
+    } catch (error) {
+      console.error('Erro ao votar:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  if (showResults) {
+    return (
+      <div className='min-h-screen bg-background flex justify-center items-start px-4 pt-16'>
+        <div className='bg-white rounded-sm shadow-sm p-10 w-full max-w-2xl flex flex-col gap-6'>
+          <h1 className='text-base font-bold text-text-dark'>{poll.title}</h1>
+
+          <div className='flex flex-col gap-2'>
+            {poll.poll_options?.map(option => (
+              <VoteBar key={option.id} label={option.text} votes={option.votes?.length ?? 0} totalVotes={totalVotes} />
+            ))}
+          </div>
+
+          <Button variant='secondary' className='self-start' onClick={() => setShowResults(false)}>
+            Voltar
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className='min-h-screen bg-background flex justify-center items-start px-4 pt-16'>
+      <div className='bg-white rounded-sm shadow-sm p-10 w-full max-w-2xl flex flex-col gap-6'>
+        <div className='flex flex-col gap-1'>
+          <div className='flex items-center justify-between gap-2'>
+            <h1 className='text-base font-bold text-text-dark '>{poll.title}</h1>
+            {!isActive && (
+              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${POLL_STATUS_COLORS[status]}`}>
+                {POLL_STATUS_LABELS[status]}
+              </span>
+            )}
+          </div>
+          {isActive && <p className='text-sm text-neutral-dark'>Escolha uma resposta</p>}
+        </div>
+
+        <div className='flex flex-col gap-3'>
+          {poll.poll_options?.map(option => (
+            <RadioOption
+              key={option.id}
+              name='poll-option'
+              label={option.text}
+              value={option.id}
+              disabled={!isActive}
+              checked={selectedOption === option.id}
+              onChange={() => setSelectedOption(option.id)}
+            />
+          ))}
+        </div>
+
+        <div className='flex gap-3 w-fit'>
+          <Button variant='primary' disabled={!selectedOption || !isActive || isLoading} onClick={handleVote}>
+            {isLoading ? 'Votando...' : 'Votar'}
+          </Button>
+
+          <Button variant='secondary' onClick={() => setShowResults(true)}>
+            Resultados
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export { PollVoting }

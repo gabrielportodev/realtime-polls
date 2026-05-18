@@ -14,7 +14,7 @@ function Header() {
 
   return (
     <header className='w-full bg-white border-b border-neutral/40'>
-      <div className='max-w-5xl mx-auto px-6 h-16 flex items-center justify-between'>
+      <div className='max-w-7xl mx-auto px-6 h-16 flex items-center justify-between'>
         <Link href='/polls'>
           <img src='/MyPoll.svg' alt='My Poll' width={120} height={40} />
         </Link>

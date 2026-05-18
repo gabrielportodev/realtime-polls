@@ -13,7 +13,7 @@ function VoteBar({ label, votes, totalVotes, disabled = false }: VoteBarProps) {
   return (
     <div
       className={cn(
-        'relative w-full h-10 rounded-xs overflow-hidden bg-primary-light',
+        'relative w-full h-10 rounded-sm overflow-hidden bg-primary-light',
         disabled && 'opacity-50 cursor-not-allowed'
       )}
     >
