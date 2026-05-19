@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { getPollStatus } from '@/lib/get-poll-status'
 
 export async function createPoll(input: {
   title: string
@@ -27,6 +28,18 @@ export async function createPoll(input: {
 
 export async function vote(pollOptionId: string): Promise<void> {
   const supabase = createClient()
+
+  const { data: option, error: optionError } = await supabase
+    .from('poll_options')
+    .select('polls(start_at, end_at)')
+    .eq('id', pollOptionId)
+    .single<{ polls: { start_at: string; end_at: string } | null }>()
+
+  if (optionError) throw optionError
+  if (!option?.polls) throw new Error('Opção não encontrada.')
+
+  const status = getPollStatus(option.polls.start_at, option.polls.end_at)
+  if (status !== 'ongoing') throw new Error('Esta enquete não está ativa.')
 
   const { error } = await supabase.from('votes').insert({ poll_option_id: pollOptionId })
 
