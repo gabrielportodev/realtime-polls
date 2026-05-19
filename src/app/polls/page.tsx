@@ -1,9 +1,11 @@
+import { PollsListSkeleton } from '@/components/poll/poll-card-skeleton'
 import { PollsFilter } from '@/components/poll/polls-filter'
 import { getPolls } from '@/lib/supabase/server-queries'
 import { PollCard } from '@/components/poll/poll-card'
-import { Spinner } from '@/components/ui/spinner'
+import { Button } from '@/components/ui/button'
 import { PollStatus } from '@/types'
 import { Suspense } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 interface PollsPageProps {
@@ -11,14 +13,28 @@ interface PollsPageProps {
 }
 
 async function PollsList({ status }: { status?: PollStatus }) {
-  const polls = await getPolls(status)
+  const { polls, totalCount } = await getPolls(status)
 
   if (polls.length === 0) {
+    const hasNoPollsAtAll = totalCount === 0
     return (
-      <div className='flex flex-col items-center justify-center py-16 gap-3'>
-        <p className='text-neutral-dark text-sm'>Nenhuma enquete encontrada.</p>
-        <Link href='/polls/new' className='text-sm text-primary font-semibold hover:underline'>
-          Criar a primeira enquete
+      <div className='flex flex-col items-center justify-center text-center py-16 gap-3'>
+        <div className='flex flex-col gap-1 max-w-sm'>
+          <h2 className='text-lg font-bold text-text-dark'>
+            {hasNoPollsAtAll ? 'Nenhuma enquete cadastrada' : 'Nenhuma enquete encontrada'}
+          </h2>
+          <p className='text-sm text-neutral-dark'>
+            {hasNoPollsAtAll
+              ? 'Você ainda não criou nenhuma enquete. Que tal começar agora?'
+              : 'Não encontramos enquetes com esse status. Tente outro filtro ou crie uma nova.'}
+          </p>
+        </div>
+        <Link href='/polls/new'>
+          <Button
+            icon={<Image src='/PlusCircle.png' alt='' width={16} height={16} aria-hidden='true' className='size-4' />}
+          >
+            Criar enquete
+          </Button>
         </Link>
       </div>
     )
@@ -46,29 +62,11 @@ export default async function PollsPage({ searchParams }: PollsPageProps) {
           <p className='text-sm text-neutral-dark'>Encontre aqui a sua enquete</p>
         </div>
         <div className='w-full sm:w-auto sm:ml-auto'>
-          <Suspense
-            fallback={
-              <div className='flex flex-col gap-1'>
-                <span className='text-base font-semibold text-text-dark'>Status</span>
-                <div className='w-full sm:w-48 h-11 flex items-center justify-center rounded-xs border border-neutral bg-white'>
-                  <Spinner size='sm' />
-                </div>
-              </div>
-            }
-          >
-            <PollsFilter />
-          </Suspense>
+          <PollsFilter />
         </div>
       </div>
 
-      <Suspense
-        key={status}
-        fallback={
-          <div className='flex justify-center py-16'>
-            <Spinner size='lg' />
-          </div>
-        }
-      >
+      <Suspense key={status} fallback={<PollsListSkeleton />}>
         <PollsList status={status} />
       </Suspense>
     </main>
