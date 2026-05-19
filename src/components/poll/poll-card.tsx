@@ -15,8 +15,8 @@ function PollCard({ title, startAt, endAt, onClick, className }: PollCardProps) 
       onClick={onClick}
       className={cn(
         'bg-white rounded-2xl border border-neutral/20 shadow-sm p-6',
-        'flex flex-col gap-4',
-        onClick && 'cursor-pointer hover:shadow-md transition-shadow duration-200',
+        'flex flex-col gap-4 transition-all duration-300 ease-out',
+        'hover:-translate-y-0.5 hover:shadow-md hover:border-primary/40 cursor-pointer',
         className
       )}
     >

@@ -23,10 +23,6 @@ export const BarraCheia: Story = {
   args: { votes: 31, totalVotes: 31 }
 }
 
-export const Desabilitado: Story = {
-  args: { disabled: true }
-}
-
 export const Grupo: Story = {
   render: () => (
     <div className='flex flex-col gap-2 w-96'>

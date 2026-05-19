@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { VoteBar } from '@/components/poll/vote-bar'
 import { describe, expect, it } from 'vitest'
 
@@ -18,20 +18,21 @@ describe('VoteBar', () => {
     expect(screen.getByText('0 votos')).toBeInTheDocument()
   })
 
-  it('aplica opacidade quando desabilitado', () => {
-    const { container } = render(<VoteBar label='React' votes={15} totalVotes={31} disabled />)
-    expect(container.firstChild).toHaveClass('opacity-50')
-  })
-
-  it('calcula a largura da barra corretamente', () => {
+  it('inicia a barra em 0% antes da animação', () => {
     const { container } = render(<VoteBar label='React' votes={15} totalVotes={30} />)
     const bar = container.querySelector('.bg-primary') as HTMLElement
-    expect(bar.style.width).toBe('50%')
+    expect(bar.style.width).toBe('0%')
   })
 
-  it('arredonda a porcentagem corretamente (15/31 = 48%)', () => {
+  it('calcula a largura da barra corretamente após animar', async () => {
+    const { container } = render(<VoteBar label='React' votes={15} totalVotes={30} />)
+    const bar = container.querySelector('.bg-primary') as HTMLElement
+    await waitFor(() => expect(bar.style.width).toBe('50%'))
+  })
+
+  it('arredonda a porcentagem corretamente (15/31 = 48%)', async () => {
     const { container } = render(<VoteBar label='React' votes={15} totalVotes={31} />)
     const bar = container.querySelector('.bg-primary') as HTMLElement
-    expect(bar.style.width).toBe('48%')
+    await waitFor(() => expect(bar.style.width).toBe('48%'))
   })
 })

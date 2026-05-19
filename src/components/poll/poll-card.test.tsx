@@ -32,8 +32,9 @@ describe('PollCard', () => {
     expect(handleClick).toHaveBeenCalledOnce()
   })
 
-  it('não aplica cursor-pointer sem onClick', () => {
+  it('aplica cursor-pointer e estilos de hover', () => {
     const { container } = render(<PollCard {...defaultProps} />)
-    expect(container.firstChild).not.toHaveClass('cursor-pointer')
+    expect(container.firstChild).toHaveClass('cursor-pointer')
+    expect(container.firstChild).toHaveClass('hover:-translate-y-0.5')
   })
 })
