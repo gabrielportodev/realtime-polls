@@ -19,7 +19,7 @@ function VoteBar({ label, votes, totalVotes }: VoteBarProps) {
   }, [percentage])
 
   return (
-    <div className={cn('relative w-full h-10 rounded-sm overflow-hidden bg-primary-light')}>
+    <div className={cn('relative w-full h-10 rounded-sm overflow-hidden bg-primary-light/80')}>
       <div
         className='absolute inset-y-0 left-0 bg-primary transition-[width] duration-700 ease-out'
         style={{ width: `${animatedPercentage}%` }}
@@ -27,7 +27,9 @@ function VoteBar({ label, votes, totalVotes }: VoteBarProps) {
 
       <div className='relative z-10 flex items-center justify-between h-full px-4'>
         <span className='text-sm font-semibold text-white truncate'>{label}</span>
-        <span className='text-sm font-semibold text-white'>{votes} votos</span>
+        <span className='text-sm font-semibold text-white'>
+          {votes} {votes === 1 ? 'voto' : 'votos'}
+        </span>
       </div>
     </div>
   )
