@@ -94,14 +94,19 @@ describe('PollVoting', () => {
   it('exibe resultados ao clicar no botão resultados', async () => {
     render(<PollVoting initialPoll={ongoingPoll} />)
     await userEvent.click(screen.getByRole('button', { name: /resultados/i }))
-    expect(screen.getByText('1 votos')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('1 votos')).toBeInTheDocument()
+    })
   })
 
   it('permite voltar à tela de votação a partir dos resultados', async () => {
     render(<PollVoting initialPoll={ongoingPoll} />)
     await userEvent.click(screen.getByRole('button', { name: /resultados/i }))
-    await userEvent.click(screen.getByRole('button', { name: /voltar/i }))
-    expect(screen.getByRole('button', { name: /votar/i })).toBeInTheDocument()
+    const voltarBtn = await screen.findByRole('button', { name: /voltar/i })
+    await userEvent.click(voltarBtn)
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /votar/i })).toBeInTheDocument()
+    })
   })
 
   it('exibe resultados após votar com sucesso', async () => {

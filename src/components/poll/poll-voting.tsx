@@ -1,6 +1,7 @@
 'use client'
 
 import { getPollStatus, POLL_STATUS_LABELS, POLL_STATUS_COLORS } from '@/lib/get-poll-status'
+import { PollVotingSkeleton } from '@/components/poll/poll-voting-skeleton'
 import { RadioOption } from '@/components/ui/radio-option'
 import { createClient } from '@/lib/supabase/client'
 import { VoteBar } from '@/components/poll/vote-bar'
@@ -18,6 +19,17 @@ function PollVoting({ initialPoll }: PollVotingProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [showResults, setShowResults] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  function toggleResults(next: boolean) {
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setShowResults(next)
+      if (!next) setSelectedOption(null)
+      setIsTransitioning(false)
+    }, 300)
+  }
 
   const status = getPollStatus(poll.start_at, poll.end_at)
   const isActive = status === 'ongoing'
@@ -26,11 +38,11 @@ function PollVoting({ initialPoll }: PollVotingProps) {
 
   useEffect(() => {
     const supabase = createClient()
-    const optionIds = poll.poll_options?.map(opt => opt.id) ?? []
+    const optionIds = initialPoll.poll_options?.map(opt => opt.id) ?? []
     if (optionIds.length === 0) return
 
     const channel = supabase
-      .channel(`poll-votes-${poll.id}`)
+      .channel(`poll-votes-${initialPoll.id}`)
       .on(
         'postgres_changes',
         {
@@ -55,24 +67,31 @@ function PollVoting({ initialPoll }: PollVotingProps) {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [poll])
+  }, [initialPoll.id, initialPoll.poll_options])
 
   async function handleVote() {
     if (!selectedOption) return
     setIsLoading(true)
+    setErrorMessage(null)
     try {
       await vote(selectedOption)
-      setShowResults(true)
-    } catch (error) {
-      console.error('Erro ao votar:', error)
+      toggleResults(true)
+    } catch {
+      setErrorMessage('Não foi possível registrar seu voto. Tente novamente.')
     } finally {
       setIsLoading(false)
     }
   }
 
+  if (isTransitioning) {
+    return (
+      <PollVotingSkeleton optionsCount={poll.poll_options?.length ?? 4} variant={showResults ? 'voting' : 'results'} />
+    )
+  }
+
   if (showResults) {
     return (
-      <div className='min-h-screen bg-background flex justify-center items-start px-4 pt-16'>
+      <div className='bg-background flex justify-center items-start px-4 pt-16'>
         <div className='bg-white rounded-sm shadow-sm p-10 w-full max-w-2xl flex flex-col gap-6'>
           <h1 className='text-base font-bold text-text-dark'>{poll.title}</h1>
 
@@ -82,7 +101,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
             ))}
           </div>
 
-          <Button variant='secondary' className='self-start' onClick={() => setShowResults(false)}>
+          <Button variant='secondary' className='self-start' onClick={() => toggleResults(false)}>
             Voltar
           </Button>
         </div>
@@ -91,7 +110,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
   }
 
   return (
-    <div className='min-h-screen bg-background flex justify-center items-start px-4 pt-16'>
+    <div className='bg-background flex justify-center items-start px-4 pt-16'>
       <div className='bg-white rounded-sm shadow-sm p-10 w-full max-w-2xl flex flex-col gap-6'>
         <div className='flex flex-col gap-1'>
           <div className='flex items-center justify-between gap-2'>
@@ -124,10 +143,16 @@ function PollVoting({ initialPoll }: PollVotingProps) {
             {isLoading ? 'Votando...' : 'Votar'}
           </Button>
 
-          <Button variant='secondary' onClick={() => setShowResults(true)}>
+          <Button variant='secondary' onClick={() => toggleResults(true)}>
             Resultados
           </Button>
         </div>
+
+        {errorMessage && (
+          <p role='alert' className='text-sm text-red-600'>
+            {errorMessage}
+          </p>
+        )}
       </div>
     </div>
   )

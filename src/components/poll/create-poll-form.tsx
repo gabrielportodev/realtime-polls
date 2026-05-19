@@ -4,15 +4,18 @@ import { createPollSchema, CreatePollSchemaType } from '@/schemas/create-poll-sc
 import { useForm, useFieldArray } from 'react-hook-form'
 import { DateInput } from '@/components/ui/date-input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PlusCircleIcon, Trash2 } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import { createPoll } from '@/lib/supabase/queries'
 import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { useState } from 'react'
 
 function CreatePollForm() {
   const router = useRouter()
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const {
     register,
@@ -32,6 +35,7 @@ function CreatePollForm() {
   const { fields, append, remove } = useFieldArray({ control, name: 'options' })
 
   async function onSubmit(data: CreatePollSchemaType) {
+    setSubmitError(null)
     try {
       await createPoll({
         title: data.title,
@@ -40,8 +44,8 @@ function CreatePollForm() {
         options: data.options.map(opt => opt.text)
       })
       router.push('/polls')
-    } catch (error) {
-      console.error('Erro ao criar enquete:', error)
+    } catch {
+      setSubmitError('Não foi possível criar a enquete. Tente novamente.')
     }
   }
 
@@ -83,7 +87,7 @@ function CreatePollForm() {
           type='button'
           variant='primary'
           className='self-start'
-          icon={<PlusCircleIcon className='size-4' />}
+          icon={<Image src='/PlusCircle.png' alt='' width={16} height={16} aria-hidden='true' className='size-4' />}
           onClick={() => append({ text: '' })}
         >
           Adicionar opção
@@ -94,6 +98,12 @@ function CreatePollForm() {
         <DateInput label='Data de início' error={errors.start_at?.message} {...register('start_at')} />
         <DateInput label='Data de término' error={errors.end_at?.message} {...register('end_at')} />
       </div>
+
+      {submitError && (
+        <p role='alert' className='text-sm text-red-600 text-center'>
+          {submitError}
+        </p>
+      )}
 
       <div className='flex justify-center'>
         <Button
