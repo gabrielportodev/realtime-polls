@@ -1,5 +1,5 @@
-import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 import * as React from 'react'
 
 export interface SelectProps extends React.ComponentProps<'select'> {
@@ -22,7 +22,7 @@ function Select({ className, label, error, id, options, ...props }: SelectProps)
         <select
           id={selectId}
           className={cn(
-            'w-full h-11 px-4 pr-10 rounded-xs border border-neutral bg-white',
+            'w-full h-11 px-4 pr-10 rounded-sm border border-neutral bg-white',
             'text-sm text-text-dark appearance-none',
             'outline-none transition-all cursor-pointer',
             'focus:border-primary focus:ring-2 focus:ring-primary/30',
@@ -38,7 +38,14 @@ function Select({ className, label, error, id, options, ...props }: SelectProps)
             </option>
           ))}
         </select>
-        <ChevronDown className='absolute right-3 top-1/2 -translate-y-1/2 size-4 text-neutral-dark pointer-events-none' />
+        <Image
+          src='/Polygon.png'
+          alt=''
+          width={16}
+          height={16}
+          aria-hidden='true'
+          className='absolute right-3 top-1/2 -translate-y-1/2 size-4 pointer-events-none'
+        />
       </div>
       {error && <span className='text-xs text-red-500'>{error}</span>}
     </div>
