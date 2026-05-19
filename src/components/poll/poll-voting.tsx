@@ -36,20 +36,22 @@ function PollVoting({ initialPoll }: PollVotingProps) {
 
   const totalVotes = poll.poll_options?.reduce((sum, opt) => sum + (opt.votes?.length ?? 0), 0) ?? 0
 
+  const optionIds = poll.poll_options?.map(opt => opt.id).join(',') ?? ''
+
   useEffect(() => {
     const supabase = createClient()
-    const optionIds = initialPoll.poll_options?.map(opt => opt.id) ?? []
-    if (optionIds.length === 0) return
+    const ids = optionIds.split(',').filter(Boolean)
+    if (ids.length === 0) return
 
     const channel = supabase
-      .channel(`poll-votes-${initialPoll.id}`)
+      .channel(`poll-votes-${poll.id}`)
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'votes',
-          filter: `poll_option_id=in.(${optionIds.join(',')})`
+          filter: `poll_option_id=in.(${ids.join(',')})`
         },
         payload => {
           setPoll(prev => ({
@@ -67,7 +69,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [initialPoll.id, initialPoll.poll_options])
+  }, [poll.id, optionIds])
 
   async function handleVote() {
     if (!selectedOption) return

@@ -95,7 +95,7 @@ describe('PollVoting', () => {
     render(<PollVoting initialPoll={ongoingPoll} />)
     await userEvent.click(screen.getByRole('button', { name: /resultados/i }))
     await waitFor(() => {
-      expect(screen.getByText('1 votos')).toBeInTheDocument()
+      expect(screen.getByText('1 voto')).toBeInTheDocument()
     })
   })
 
