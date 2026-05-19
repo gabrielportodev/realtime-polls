@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 import Link from 'next/link'
 
 function Header() {
@@ -16,7 +17,7 @@ function Header() {
     <header className='w-full bg-white border-b border-neutral/40'>
       <div className='max-w-7xl mx-auto px-6 h-16 flex items-center justify-between'>
         <Link href='/polls'>
-          <img src='/MyPoll.svg' alt='My Poll' width={120} height={40} />
+          <Image src='/MyPoll.svg' alt='My Poll' width={120} height={40} />
         </Link>
 
         <nav className='self-stretch flex items-stretch gap-6'>
