@@ -53,7 +53,7 @@ function CreatePollForm() {
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
       <Input
         label='Título'
-        placeholder='Ex: Qual a sua linguagem favorita?'
+        placeholder='Digite aqui a sua pergunta'
         error={errors.title?.message}
         {...register('title')}
       />

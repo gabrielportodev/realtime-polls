@@ -14,7 +14,7 @@ function Header() {
   ]
 
   return (
-    <header className='w-full bg-white border-b border-neutral/40'>
+    <header className='w-full bg-white border-b border-neutral/30 shadow-md'>
       <div className='max-w-7xl mx-auto px-6 h-16 flex items-center justify-between'>
         <Link href='/polls'>
           <Image src='/MyPoll.svg' alt='My Poll' width={120} height={40} />
@@ -28,8 +28,8 @@ function Header() {
                 key={href}
                 href={href}
                 className={cn(
-                  'flex items-center text-sm font-semibold transition-colors',
-                  isActive ? 'text-primary border-b-2 border-primary' : 'text-neutral-dark hover:text-primary'
+                  'flex items-center text-sm text-neutral-dark font-semibold transition-colors',
+                  isActive ? 'border-b-2 border-primary' : 'hover:text-primary'
                 )}
               >
                 {label}

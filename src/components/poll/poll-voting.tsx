@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { VoteBar } from '@/components/poll/vote-bar'
 import { Button } from '@/components/ui/button'
 import { vote } from '@/lib/supabase/queries'
+import { Card } from '@/components/ui/card'
 import { useState, useEffect } from 'react'
 import { Poll, Vote } from '@/types'
 
@@ -98,7 +99,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
   if (showResults) {
     return (
       <div className='bg-background flex justify-center items-start px-4 pt-16'>
-        <div className='bg-white rounded-sm shadow-sm p-10 w-full max-w-2xl flex flex-col gap-6'>
+        <Card className='p-10 w-full max-w-2xl gap-6'>
           <h1 className='text-base font-bold text-text-dark'>{poll.title}</h1>
 
           <div className='flex flex-col gap-2'>
@@ -110,14 +111,14 @@ function PollVoting({ initialPoll }: PollVotingProps) {
           <Button variant='secondary' className='self-start' onClick={() => toggleResults(false)}>
             Voltar
           </Button>
-        </div>
+        </Card>
       </div>
     )
   }
 
   return (
     <div className='bg-background flex justify-center items-start px-4 pt-16'>
-      <div className='bg-white rounded-sm shadow-sm p-10 w-full max-w-2xl flex flex-col gap-6'>
+      <Card className='p-10 w-full max-w-2xl gap-6'>
         <div className='flex flex-col gap-1'>
           <div className='flex items-center justify-between gap-2'>
             <h1 className='text-base font-bold text-text-dark '>{poll.title}</h1>
@@ -163,7 +164,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
             {errorMessage}
           </p>
         )}
-      </div>
+      </Card>
     </div>
   )
 }
