@@ -43,8 +43,8 @@ async function PollsList({ status }: { status?: PollStatus }) {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
       {polls.map(poll => (
-        <Link key={poll.id} href={`/polls/${poll.id}`}>
-          <PollCard title={poll.title} startAt={poll.start_at} endAt={poll.end_at} />
+        <Link key={poll.id} href={`/polls/${poll.id}`} className='h-full'>
+          <PollCard title={poll.title} startAt={poll.start_at} endAt={poll.end_at} className='h-full' />
         </Link>
       ))}
     </div>

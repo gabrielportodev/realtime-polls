@@ -7,9 +7,10 @@ export interface VoteBarProps {
   label: string
   votes: number
   totalVotes: number
+  isVoted?: boolean
 }
 
-function VoteBar({ label, votes, totalVotes }: VoteBarProps) {
+export function VoteBar({ label, votes, totalVotes, isVoted }: VoteBarProps) {
   const percentage = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0
   const [animatedPercentage, setAnimatedPercentage] = useState(0)
 
@@ -26,13 +27,14 @@ function VoteBar({ label, votes, totalVotes }: VoteBarProps) {
       />
 
       <div className='relative z-10 flex items-center justify-between h-full px-4'>
-        <span className='text-sm font-semibold text-white truncate'>{label}</span>
-        <span className='text-sm font-semibold text-white'>
-          {votes} {votes === 1 ? 'voto' : 'votos'}
-        </span>
+        <span className='text-sm font-semibold text-white truncate min-w-0'>{label}</span>
+        <div className='flex items-center gap-2 shrink-0'>
+          {isVoted && <span className='text-xs text-white/70 whitespace-nowrap'>seu voto</span>}
+          <span className='text-sm font-semibold text-white whitespace-nowrap'>
+            {votes} {votes === 1 ? 'voto' : 'votos'}
+          </span>
+        </div>
       </div>
     </div>
   )
 }
-
-export { VoteBar }

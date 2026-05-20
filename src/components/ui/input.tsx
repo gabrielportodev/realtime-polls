@@ -19,10 +19,10 @@ function Input({ className, label, error, id, ...props }: InputProps) {
       <input
         id={inputId}
         className={cn(
-          'w-full h-11 px-4 rounded-xs border border-primary bg-white',
+          'w-full h-11 px-4 rounded-xs border border-neutral bg-white',
           'text-sm text-text-dark placeholder:text-neutral',
           'outline-none transition-all',
-          'focus:ring-2 focus:ring-primary/30',
+          'focus:ring-2 focus:ring-primary/30 focus:border-primary',
           'disabled:opacity-50 disabled:cursor-not-allowed',
           error && 'border-red-500 focus:ring-red-500/30',
           className

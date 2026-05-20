@@ -10,7 +10,7 @@ const STATUS_OPTIONS = [
   { value: 'finished', label: 'Finalizadas' }
 ]
 
-function PollsFilter() {
+export function PollsFilter() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const status = searchParams.get('status') ?? ''
@@ -32,5 +32,3 @@ function PollsFilter() {
     </div>
   )
 }
-
-export { PollsFilter }

@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useState } from 'react'
 
-function CreatePollForm() {
+export function CreatePollForm() {
   const router = useRouter()
   const [submitError, setSubmitError] = useState<string | null>(null)
 
@@ -119,5 +119,3 @@ function CreatePollForm() {
     </form>
   )
 }
-
-export { CreatePollForm }

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 
-function Header() {
+export function Header() {
   const pathname = usePathname()
 
   const links = [
@@ -41,5 +41,3 @@ function Header() {
     </header>
   )
 }
-
-export { Header }

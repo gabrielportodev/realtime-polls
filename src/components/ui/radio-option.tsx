@@ -11,12 +11,12 @@ function RadioOption({ className, label, error, id, ...props }: RadioOptionProps
 
   return (
     <div className='flex flex-col gap-1'>
-      <label htmlFor={inputId} className='flex items-center gap-2 cursor-pointer group'>
+      <label htmlFor={inputId} className='flex items-start gap-2 cursor-pointer group'>
         <input
           id={inputId}
           type='radio'
           className={cn(
-            'size-4 cursor-pointer appearance-none rounded-full border-2 border-neutral',
+            'size-4 shrink-0 mt-0.5 cursor-pointer appearance-none rounded-full border-2 border-neutral',
             'transition-all',
             'checked:border-primary checked:bg-primary checked:[box-shadow:inset_0_0_0_3px_white]',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30',

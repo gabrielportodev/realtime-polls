@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton'
 
-function PollCardSkeleton() {
+export function PollCardSkeleton() {
   return (
     <div
       role='status'
@@ -20,7 +20,7 @@ interface PollsListSkeletonProps {
   count?: number
 }
 
-function PollsListSkeleton({ count = 6 }: PollsListSkeletonProps) {
+export function PollsListSkeleton({ count = 6 }: PollsListSkeletonProps) {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
       {Array.from({ length: count }).map((_, i) => (
@@ -29,5 +29,3 @@ function PollsListSkeleton({ count = 6 }: PollsListSkeletonProps) {
     </div>
   )
 }
-
-export { PollCardSkeleton, PollsListSkeleton }

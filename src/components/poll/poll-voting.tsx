@@ -1,8 +1,8 @@
 'use client'
 
 import { getPollStatus, POLL_STATUS_LABELS, POLL_STATUS_COLORS } from '@/lib/get-poll-status'
+import { hasVotedOnPoll, markPollAsVoted, getVotedOptionId } from '@/lib/voted-polls'
 import { PollVotingSkeleton } from '@/components/poll/poll-voting-skeleton'
-import { hasVotedOnPoll, markPollAsVoted } from '@/lib/voted-polls'
 import { RadioOption } from '@/components/ui/radio-option'
 import { createClient } from '@/lib/supabase/client'
 import { VoteBar } from '@/components/poll/vote-bar'
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { vote } from '@/lib/supabase/queries'
 import { Card } from '@/components/ui/card'
 import { useState, useEffect } from 'react'
+
 import { Poll, Vote } from '@/types'
 
 interface PollVotingProps {
@@ -21,6 +22,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [hasVoted, setHasVoted] = useState(() => hasVotedOnPoll(poll.id))
   const [showResults, setShowResults] = useState(() => hasVotedOnPoll(poll.id))
+  const [votedOptionId, setVotedOptionId] = useState<string | null>(() => getVotedOptionId(poll.id))
   const [isLoading, setIsLoading] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -80,8 +82,9 @@ function PollVoting({ initialPoll }: PollVotingProps) {
     setErrorMessage(null)
     try {
       await vote(selectedOption)
-      markPollAsVoted(poll.id)
+      markPollAsVoted(poll.id, selectedOption)
       setHasVoted(true)
+      setVotedOptionId(selectedOption)
       toggleResults(true)
     } catch {
       setErrorMessage('Não foi possível registrar seu voto. Tente novamente.')
@@ -104,7 +107,13 @@ function PollVoting({ initialPoll }: PollVotingProps) {
 
           <div className='flex flex-col gap-2'>
             {poll.poll_options?.map(option => (
-              <VoteBar key={option.id} label={option.text} votes={option.votes?.length ?? 0} totalVotes={totalVotes} />
+              <VoteBar
+                key={option.id}
+                label={option.text}
+                votes={option.votes?.length ?? 0}
+                totalVotes={totalVotes}
+                isVoted={option.id === votedOptionId}
+              />
             ))}
           </div>
 
@@ -123,7 +132,9 @@ function PollVoting({ initialPoll }: PollVotingProps) {
           <div className='flex items-center justify-between gap-2'>
             <h1 className='text-base font-bold text-text-dark '>{poll.title}</h1>
             {!isActive && (
-              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${POLL_STATUS_COLORS[status]}`}>
+              <span
+                className={`text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap shrink-0 ${POLL_STATUS_COLORS[status]}`}
+              >
                 {POLL_STATUS_LABELS[status]}
               </span>
             )}
@@ -138,7 +149,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
               name='poll-option'
               label={option.text}
               value={option.id}
-              disabled={!isActive}
+              disabled={!isActive || hasVoted}
               checked={selectedOption === option.id}
               onChange={() => setSelectedOption(option.id)}
             />

@@ -5,7 +5,7 @@ interface PollVotingSkeletonProps {
   variant?: 'voting' | 'results'
 }
 
-function PollVotingSkeleton({ optionsCount = 4, variant = 'voting' }: PollVotingSkeletonProps) {
+export function PollVotingSkeleton({ optionsCount = 4, variant = 'voting' }: PollVotingSkeletonProps) {
   return (
     <div
       role='status'
@@ -45,5 +45,3 @@ function PollVotingSkeleton({ optionsCount = 4, variant = 'voting' }: PollVoting
     </div>
   )
 }
-
-export { PollVotingSkeleton }
