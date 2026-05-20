@@ -96,7 +96,7 @@ cd realtime-polls
 ### 3. Instalar dependências
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### 4. Variáveis de ambiente
@@ -115,17 +115,17 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sua-anon-key
 ### 5. Rodar o projeto
 
 ```bash
-npm run dev           # http://localhost:3000
-npm run build         # build de produção
-npm run start         # serve o build
+pnpm dev           # http://localhost:3000
+pnpm build         # build de produção
+pnpm start         # serve o build
 ```
 
 ### Storybook e testes
 
 ```bash
-npm run storybook         # Storybook em http://localhost:6006
-npm run lint              # ESLint
-npm run format            # Prettier
+pnpm storybook         # Storybook em http://localhost:6006
+pnpm lint              # ESLint
+pnpm format            # Prettier
 ```
 
 Os testes Vitest são executados via Storybook (`@storybook/addon-vitest`) e por arquivos `*.test.tsx` na árvore de componentes. Cada componente possui sua story e seu arquivo de teste correspondente.

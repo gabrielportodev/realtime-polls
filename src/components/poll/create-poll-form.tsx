@@ -72,6 +72,7 @@ export function CreatePollForm() {
               <Button
                 type='button'
                 variant='outline'
+                aria-label='Remover opção'
                 onClick={() => remove(index)}
                 className='h-11 w-11 shrink-0 border-red-300 text-red-500 hover:bg-red-50'
               >

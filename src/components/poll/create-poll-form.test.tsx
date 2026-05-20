@@ -56,7 +56,7 @@ describe('CreatePollForm', () => {
   it('mostra botão de remover ao ter mais de 3 opções', async () => {
     render(<CreatePollForm />)
     await userEvent.click(screen.getByRole('button', { name: /adicionar opção/i }))
-    const trashButtons = screen.getAllByRole('button').filter(btn => btn.classList.contains('border-red-300'))
+    const trashButtons = screen.getAllByRole('button', { name: /remover opção/i })
     expect(trashButtons.length).toBeGreaterThan(0)
   })
 
@@ -64,7 +64,7 @@ describe('CreatePollForm', () => {
     render(<CreatePollForm />)
     await userEvent.click(screen.getByRole('button', { name: /adicionar opção/i }))
     expect(screen.getByPlaceholderText('Opção 4')).toBeInTheDocument()
-    const trashButtons = screen.getAllByRole('button').filter(btn => btn.classList.contains('border-red-300'))
+    const trashButtons = screen.getAllByRole('button', { name: /remover opção/i })
     await userEvent.click(trashButtons[trashButtons.length - 1])
     expect(screen.queryByPlaceholderText('Opção 4')).not.toBeInTheDocument()
   })
