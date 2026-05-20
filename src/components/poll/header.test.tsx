@@ -24,7 +24,7 @@ describe('Header', () => {
     render(<Header />)
     const enquetesLink = screen.getByText('Enquetes')
     expect(enquetesLink).toHaveClass('border-b-2')
-    expect(enquetesLink).toHaveClass('text-primary')
+    expect(enquetesLink).toHaveClass('border-primary')
   })
 
   it('aplica estilo inativo no link fora da rota atual', () => {
@@ -39,7 +39,7 @@ describe('Header', () => {
     render(<Header />)
     const criarLink = screen.getByText('Criar enquete')
     expect(criarLink).toHaveClass('border-b-2')
-    expect(criarLink).toHaveClass('text-primary')
+    expect(criarLink).toHaveClass('border-primary')
     const enquetesLink = screen.getByText('Enquetes')
     expect(enquetesLink).not.toHaveClass('border-b-2')
   })

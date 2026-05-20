@@ -19,7 +19,7 @@ describe('NewPollPage', () => {
 
   it('renderiza o formulário de criação de enquete', () => {
     render(<NewPollPage />)
-    expect(screen.getByPlaceholderText('Ex: Qual a sua linguagem favorita?')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Digite aqui a sua pergunta')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /criar enquete/i })).toBeInTheDocument()
   })
 })

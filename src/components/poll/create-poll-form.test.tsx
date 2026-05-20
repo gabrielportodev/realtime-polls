@@ -16,7 +16,7 @@ vi.mock('@/lib/supabase/queries', () => ({
 describe('CreatePollForm', () => {
   it('renderiza o campo de título', () => {
     render(<CreatePollForm />)
-    expect(screen.getByPlaceholderText('Ex: Qual a sua linguagem favorita?')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Digite aqui a sua pergunta')).toBeInTheDocument()
   })
 
   it('renderiza 3 opções de resposta por padrão', () => {
@@ -81,7 +81,7 @@ describe('CreatePollForm', () => {
     const { createPoll } = await import('@/lib/supabase/queries')
     render(<CreatePollForm />)
 
-    await userEvent.type(screen.getByPlaceholderText('Ex: Qual a sua linguagem favorita?'), 'Melhor linguagem?')
+    await userEvent.type(screen.getByPlaceholderText('Digite aqui a sua pergunta'), 'Melhor linguagem?')
     await userEvent.type(screen.getByPlaceholderText('Opção 1'), 'TypeScript')
     await userEvent.type(screen.getByPlaceholderText('Opção 2'), 'Python')
     await userEvent.type(screen.getByPlaceholderText('Opção 3'), 'Go')
