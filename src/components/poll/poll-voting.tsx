@@ -145,9 +145,11 @@ function PollVoting({ initialPoll }: PollVotingProps) {
             {isLoading ? 'Votando...' : 'Votar'}
           </Button>
 
-          <Button variant='secondary' onClick={() => toggleResults(true)}>
-            Resultados
-          </Button>
+          {status !== 'not_started' && (
+            <Button variant='secondary' onClick={() => toggleResults(true)}>
+              Resultados
+            </Button>
+          )}
         </div>
 
         {errorMessage && (
