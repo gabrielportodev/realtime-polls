@@ -101,7 +101,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
 
   if (showResults) {
     return (
-      <div className='bg-background flex justify-center items-start px-4 pt-16'>
+      <div className='bg-background flex justify-center items-start px-4 pt-16 pb-10'>
         <Card className='p-10 w-full max-w-2xl gap-6'>
           <h1 className='text-base font-bold text-text-dark'>{poll.title}</h1>
 
@@ -126,7 +126,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
   }
 
   return (
-    <div className='bg-background flex justify-center items-start px-4 pt-16'>
+    <div className='bg-background flex justify-center items-start px-4 pt-16 pb-10'>
       <Card className='p-10 w-full max-w-2xl gap-6'>
         <div className='flex flex-col gap-1'>
           <div className='flex items-center justify-between gap-2'>
