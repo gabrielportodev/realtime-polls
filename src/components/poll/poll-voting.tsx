@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { vote } from '@/lib/supabase/queries'
 import { Card } from '@/components/ui/card'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 import { Poll, Vote } from '@/types'
 
@@ -161,6 +162,12 @@ function PollVoting({ initialPoll }: PollVotingProps) {
             <Button variant='primary' disabled={!selectedOption || isLoading} onClick={handleVote}>
               {isLoading ? 'Votando...' : 'Votar'}
             </Button>
+          )}
+
+          {(status === 'not_started' || hasVoted) && (
+            <Link href='/polls'>
+              <Button variant='secondary'>Voltar</Button>
+            </Link>
           )}
 
           {status !== 'not_started' && (
