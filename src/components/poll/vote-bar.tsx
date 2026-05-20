@@ -19,7 +19,7 @@ function VoteBar({ label, votes, totalVotes }: VoteBarProps) {
   }, [percentage])
 
   return (
-    <div className={cn('relative w-full h-10 rounded-sm overflow-hidden bg-primary-light/80')}>
+    <div className={cn('relative w-full h-10 rounded-sm overflow-hidden bg-primary-light')}>
       <div
         className='absolute inset-y-0 left-0 bg-primary transition-[width] duration-700 ease-out'
         style={{ width: `${animatedPercentage}%` }}

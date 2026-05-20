@@ -2,6 +2,7 @@
 
 import { getPollStatus, POLL_STATUS_LABELS, POLL_STATUS_COLORS } from '@/lib/get-poll-status'
 import { PollVotingSkeleton } from '@/components/poll/poll-voting-skeleton'
+import { hasVotedOnPoll, markPollAsVoted } from '@/lib/voted-polls'
 import { RadioOption } from '@/components/ui/radio-option'
 import { createClient } from '@/lib/supabase/client'
 import { VoteBar } from '@/components/poll/vote-bar'
@@ -17,7 +18,8 @@ interface PollVotingProps {
 function PollVoting({ initialPoll }: PollVotingProps) {
   const [poll, setPoll] = useState(initialPoll)
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
-  const [showResults, setShowResults] = useState(false)
+  const [hasVoted, setHasVoted] = useState(() => hasVotedOnPoll(poll.id))
+  const [showResults, setShowResults] = useState(() => hasVotedOnPoll(poll.id))
   const [isLoading, setIsLoading] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -77,6 +79,8 @@ function PollVoting({ initialPoll }: PollVotingProps) {
     setErrorMessage(null)
     try {
       await vote(selectedOption)
+      markPollAsVoted(poll.id)
+      setHasVoted(true)
       toggleResults(true)
     } catch {
       setErrorMessage('Não foi possível registrar seu voto. Tente novamente.')
@@ -141,9 +145,11 @@ function PollVoting({ initialPoll }: PollVotingProps) {
         </div>
 
         <div className='flex gap-3 w-fit'>
-          <Button variant='primary' disabled={!selectedOption || !isActive || isLoading} onClick={handleVote}>
-            {isLoading ? 'Votando...' : 'Votar'}
-          </Button>
+          {status === 'ongoing' && !hasVoted && (
+            <Button variant='primary' disabled={!selectedOption || isLoading} onClick={handleVote}>
+              {isLoading ? 'Votando...' : 'Votar'}
+            </Button>
+          )}
 
           {status !== 'not_started' && (
             <Button variant='secondary' onClick={() => toggleResults(true)}>
