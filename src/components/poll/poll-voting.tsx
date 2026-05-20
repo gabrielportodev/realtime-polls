@@ -164,7 +164,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
             </Button>
           )}
 
-          {(status === 'not_started' || hasVoted) && (
+          {(!isActive || hasVoted) && (
             <Link href='/polls'>
               <Button variant='secondary'>Voltar</Button>
             </Link>
