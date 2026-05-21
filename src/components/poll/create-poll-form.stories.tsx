@@ -29,7 +29,10 @@ export const ValidationErrors: Story = {
 export const PreFilled: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    await userEvent.type(canvas.getByPlaceholderText('Digite aqui a sua pergunta'), 'Qual a melhor linguagem de programação?')
+    await userEvent.type(
+      canvas.getByPlaceholderText('Digite aqui a sua pergunta'),
+      'Qual a melhor linguagem de programação?'
+    )
     await userEvent.type(canvas.getByPlaceholderText('Opção 1'), 'TypeScript')
     await userEvent.type(canvas.getByPlaceholderText('Opção 2'), 'Python')
     await userEvent.type(canvas.getByPlaceholderText('Opção 3'), 'Go')
