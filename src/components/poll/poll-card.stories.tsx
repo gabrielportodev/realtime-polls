@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { PollCard } from '@/components/poll/poll-card'
 
 const meta: Meta<typeof PollCard> = {
+  title: 'Poll/PollCard',
   component: PollCard,
   args: {
     title: 'Qual o melhor framework frontend?',

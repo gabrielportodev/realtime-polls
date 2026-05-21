@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { Header } from '@/components/poll/header'
 
 const meta: Meta<typeof Header> = {
+  title: 'Poll/Header',
   component: Header,
   parameters: {
     nextjs: {

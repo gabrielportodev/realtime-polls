@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { Spinner } from '@/components/ui/spinner'
 
 const meta: Meta<typeof Spinner> = {
+  title: 'UI/Spinner',
   component: Spinner,
   args: {
     size: 'md'

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { VoteBar } from '@/components/poll/vote-bar'
 
 const meta: Meta<typeof VoteBar> = {
+  title: 'Poll/VoteBar',
   component: VoteBar,
   args: {
     label: 'React',

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { PollsFilter } from '@/components/poll/polls-filter'
 
 const meta: Meta<typeof PollsFilter> = {
+  title: 'Poll/PollsFilter',
   component: PollsFilter,
   parameters: {
     nextjs: {

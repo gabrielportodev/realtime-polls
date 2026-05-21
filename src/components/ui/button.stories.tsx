@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 type StoryArgs = React.ComponentProps<typeof Button> & { showIcon: boolean }
 
 const meta: Meta<StoryArgs> = {
+  title: 'UI/Button',
   component: Button,
   args: {
     children: 'Botão',

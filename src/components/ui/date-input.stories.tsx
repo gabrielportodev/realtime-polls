@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { DateInput } from '@/components/ui/date-input'
 
 const meta: Meta<typeof DateInput> = {
+  title: 'UI/DateInput',
   component: DateInput
 }
 

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { RadioOption } from '@/components/ui/radio-option'
 
 const meta: Meta<typeof RadioOption> = {
+  title: 'UI/RadioOption',
   component: RadioOption,
   args: {
     label: 'React',

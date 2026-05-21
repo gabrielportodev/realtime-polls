@@ -16,6 +16,7 @@ const basePoll: Poll = {
 }
 
 const meta: Meta<typeof PollVoting> = {
+  title: 'Poll/PollVoting',
   component: PollVoting,
   args: { initialPoll: basePoll }
 }

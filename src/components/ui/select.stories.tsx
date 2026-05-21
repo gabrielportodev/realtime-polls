@@ -8,6 +8,7 @@ const statusOptions = [
 ]
 
 const meta: Meta<typeof Select> = {
+  title: 'UI/Select',
   component: Select,
   args: {
     options: statusOptions
