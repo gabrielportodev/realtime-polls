@@ -20,7 +20,7 @@ export function PollCard({ title, startAt, endAt, onClick, className }: PollCard
         className
       )}
     >
-      <CardTitle className='text-base font-bold text-text-dark text-center leading-snug line-clamp-2'>
+      <CardTitle className='text-base font-bold text-text-dark text-center leading-snug line-clamp-2 break-all'>
         {title}
       </CardTitle>
       <div className='flex flex-wrap gap-x-4 gap-y-1 mt-auto'>

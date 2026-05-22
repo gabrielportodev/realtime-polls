@@ -25,7 +25,7 @@ function RadioOption({ className, label, error, id, ...props }: RadioOptionProps
           )}
           {...props}
         />
-        <span className='text-sm text-text-dark group-has-disabled:opacity-50'>{label}</span>
+        <span className='text-sm text-text-dark group-has-disabled:opacity-50 break-all min-w-0'>{label}</span>
       </label>
       {error && <span className='text-xs text-red-500'>{error}</span>}
     </div>

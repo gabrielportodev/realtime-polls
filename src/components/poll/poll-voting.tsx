@@ -104,7 +104,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
     return (
       <div className='bg-background flex justify-center items-start px-4 pt-16 pb-10'>
         <Card className='p-10 w-full max-w-2xl gap-6'>
-          <h1 className='text-base font-bold text-text-dark'>{poll.title}</h1>
+          <h1 className='text-base font-bold text-text-dark break-all'>{poll.title}</h1>
 
           <div className='flex flex-col gap-2'>
             {poll.poll_options?.map(option => (
@@ -131,7 +131,7 @@ function PollVoting({ initialPoll }: PollVotingProps) {
       <Card className='p-10 w-full max-w-2xl gap-6'>
         <div className='flex flex-col gap-1'>
           <div className='flex items-center justify-between gap-2'>
-            <h1 className='text-base font-bold text-text-dark '>{poll.title}</h1>
+            <h1 className='text-base font-bold text-text-dark break-all'>{poll.title}</h1>
             {!isActive && (
               <span
                 className={`text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap shrink-0 ${POLL_STATUS_COLORS[status]}`}
